@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Structure Talks — Speaker Sign-up</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#10203A;
+    --paper:#F5F6F8;
+    --card:#FFFFFF;
+    --penn:#990000;
+    --penn-soft:#B23A3A;
+    --line:#D8DCE3;
+    --line-strong:#C2C8D2;
+    --muted:#5A6472;
+    --lattice:rgba(16,32,58,0.05);
+    --ok:#1E6B4F;
+    --ok-bg:#E7F3EC;
+    --err:#8C1515;
+    --err-bg:#FBECEC;
+    --serif:"IBM Plex Serif",Georgia,serif;
+    --sans:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{max-width:760px;margin:0 auto;padding:32px 20px 72px;}
+
+  /* ---------- Header ---------- */
+  .masthead{
+    position:relative;
+    border:1px solid var(--line);
+    background:
+      radial-gradient(var(--lattice) 1.4px, transparent 1.4px) 0 0/22px 22px,
+      linear-gradient(180deg,#FFFFFF 0%, #FBFCFD 100%);
+    border-radius:4px;
+    padding:34px 30px 28px;
+    overflow:hidden;
+  }
+  .masthead::after{
+    content:"";
+    position:absolute;left:0;right:0;bottom:0;height:3px;
+    background:linear-gradient(90deg,var(--penn) 0%, var(--penn) 46%, var(--ink) 46%, var(--ink) 100%);
+  }
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:11.5px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--penn);
+    margin:0 0 12px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .eyebrow .rule{flex:1;height:1px;background:var(--line);}
+  h1{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:34px;
+    line-height:1.08;
+    margin:0 0 8px;
+    letter-spacing:-0.01em;
+  }
+  .lede{
+    color:var(--muted);
+    font-size:15px;
+    max-width:56ch;
+    margin:0;
+  }
+
+  /* ---------- Form shell ---------- */
+  form{margin-top:22px;}
+  .section{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:24px 26px;
+    margin-top:16px;
+  }
+  .section-head{
+    display:flex;align-items:baseline;gap:12px;
+    margin:0 0 18px;
+  }
+  .section-num{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--penn);
+    font-weight:500;
+    padding-top:2px;
+  }
+  .section-title{
+    font-family:var(--serif);
+    font-size:20px;
+    font-weight:500;
+    margin:0;
+    line-height:1.2;
+  }
+  .section-note{
+    color:var(--muted);
+    font-size:13.5px;
+    margin:4px 0 0;
+  }
+
+  /* ---------- Fields ---------- */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+  .field:last-child{margin-bottom:0;}
+  label.lbl{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--ink);
+    font-weight:500;
+  }
+  .req{color:var(--penn);font-weight:600;}
+  input[type=text],
+  input[type=email]{
+    font-family:var(--sans);
+    font-size:15.5px;
+    color:var(--ink);
+    background:#FCFDFE;
+    border:1px solid var(--line-strong);
+    border-radius:3px;
+    padding:11px 13px;
+    width:100%;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  input[type=text]:focus,
+  input[type=email]:focus{
+    outline:none;
+    border-color:var(--ink);
+    box-shadow:0 0 0 3px rgba(16,32,58,0.10);
+  }
+  input.invalid{border-color:var(--penn);background:#FFFBFB;}
+
+  /* ---------- Duration radios ---------- */
+  .choices{display:flex;gap:12px;flex-wrap:wrap;}
+  .choice{
+    position:relative;
+    flex:1 1 180px;
+  }
+  .choice input{position:absolute;opacity:0;inset:0;cursor:pointer;margin:0;}
+  .choice .box{
+    display:flex;flex-direction:column;gap:2px;
+    border:1px solid var(--line-strong);
+    border-radius:3px;
+    padding:14px 16px;
+    cursor:pointer;
+    transition:border-color .15s ease, background .15s ease, box-shadow .15s ease;
+  }
+  .choice .box .big{font-weight:600;font-size:15.5px;}
+  .choice .box .sub{font-family:var(--mono);font-size:11.5px;color:var(--muted);letter-spacing:.03em;}
+  .choice input:hover + .box{border-color:var(--ink);}
+  .choice input:focus-visible + .box{box-shadow:0 0 0 3px rgba(16,32,58,0.14);}
+  .choice input:checked + .box{
+    border-color:var(--penn);
+    background:#FCF4F4;
+    box-shadow:inset 0 0 0 1px var(--penn);
+  }
+
+  /* ---------- Date grid ---------- */
+  .avail-top{
+    display:flex;justify-content:space-between;align-items:center;
+    gap:12px;flex-wrap:wrap;margin-bottom:16px;
+  }
+  .counter{
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--muted);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:5px 12px;
+    white-space:nowrap;
+  }
+  .counter.full{color:var(--penn);border-color:var(--penn-soft);background:#FCF4F4;}
+  .month{margin-bottom:16px;}
+  .month:last-child{margin-bottom:0;}
+  .month h4{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin:0 0 8px;
+    padding-bottom:6px;
+    border-bottom:1px solid var(--line);
+  }
+  .dates{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:8px;}
+  .date{position:relative;}
+  .date input{position:absolute;opacity:0;inset:0;cursor:pointer;margin:0;}
+  .date .chip{
+    display:flex;flex-direction:column;align-items:flex-start;gap:1px;
+    border:1px solid var(--line-strong);
+    border-radius:3px;
+    padding:9px 11px;
+    cursor:pointer;
+    background:#FCFDFE;
+    transition:border-color .15s ease, background .15s ease, box-shadow .15s ease, opacity .15s ease;
+  }
+  .date .chip .d{font-family:var(--mono);font-weight:600;font-size:14px;letter-spacing:.02em;}
+  .date .chip .wd{font-family:var(--mono);font-size:10.5px;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;}
+  .date input:hover:not(:disabled) + .chip{border-color:var(--ink);}
+  .date input:focus-visible + .chip{box-shadow:0 0 0 3px rgba(16,32,58,0.14);}
+  .date input:checked + .chip{
+    border-color:var(--penn);
+    background:#FCF4F4;
+    box-shadow:inset 0 0 0 1px var(--penn);
+  }
+  .date input:checked + .chip .wd{color:var(--penn-soft);}
+  .date input:disabled + .chip{opacity:.4;cursor:not-allowed;}
+
+  /* ---------- Guidelines ---------- */
+  .guidelines{
+    border:1px solid var(--line);
+    border-radius:3px;
+    background:#FBFCFD;
+    padding:4px 0;
+    max-height:260px;
+    overflow-y:auto;
+    margin-bottom:18px;
+  }
+  .guidelines-inner{padding:16px 18px;font-size:13.5px;line-height:1.6;color:#26313F;}
+  .guidelines-inner p{margin:0 0 11px;}
+  .guidelines-inner p:last-child{margin-bottom:0;}
+  .guidelines-inner strong{color:var(--ink);}
+  .guidelines-inner .tag{
+    font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--penn);display:block;margin:14px 0 6px;
+  }
+  .guidelines-inner ul{margin:6px 0 0;padding-left:18px;}
+  .guidelines-inner li{margin-bottom:5px;}
+
+  .initials-row{display:flex;gap:16px;align-items:flex-end;flex-wrap:wrap;}
+  .initials-row .field{margin-bottom:0;max-width:170px;}
+  .initials-hint{font-size:13px;color:var(--muted);flex:1 1 220px;padding-bottom:11px;}
+
+  /* ---------- honeypot ---------- */
+  .hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;overflow:hidden;}
+
+  /* ---------- Submit ---------- */
+  .submit-bar{margin-top:22px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+  button[type=submit]{
+    font-family:var(--sans);
+    font-size:15px;font-weight:600;
+    color:#fff;background:var(--ink);
+    border:none;border-radius:3px;
+    padding:14px 30px;cursor:pointer;
+    letter-spacing:.01em;
+    transition:background .15s ease, transform .05s ease;
+  }
+  button[type=submit]:hover{background:#1B3358;}
+  button[type=submit]:active{transform:translateY(1px);}
+  button[type=submit]:disabled{background:#9AA4B2;cursor:not-allowed;}
+  .privacy{font-size:12.5px;color:var(--muted);flex:1 1 260px;}
+
+  /* ---------- Banners ---------- */
+  .banner{border-radius:3px;padding:13px 16px;font-size:14px;margin-top:16px;display:none;}
+  .banner.err{background:var(--err-bg);border:1px solid #E9C7C7;color:var(--err);}
+  .banner.show{display:block;}
+
+  .success{
+    display:none;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-top:3px solid var(--ok);
+    border-radius:4px;
+    padding:36px 30px;
+    text-align:center;
+  }
+  .success.show{display:block;}
+  .success .mark{
+    width:48px;height:48px;border-radius:50%;
+    background:var(--ok-bg);color:var(--ok);
+    display:inline-flex;align-items:center;justify-content:center;
+    font-size:24px;margin-bottom:14px;
+  }
+  .success h2{font-family:var(--serif);font-weight:500;font-size:24px;margin:0 0 8px;}
+  .success p{color:var(--muted);margin:0 auto;max-width:46ch;font-size:14.5px;}
+
+  @media (max-width:560px){
+    h1{font-size:27px;}
+    .wrap{padding:20px 14px 56px;}
+    .section{padding:20px 18px;}
+    .masthead{padding:26px 20px 24px;}
+    .grid2{grid-template-columns:1fr;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow"><span>Penn · Structural Biology</span><span class="rule"></span><span>Speaker Sign-up</span></p>
+    <h1>Structure Talks</h1>
+    <p class="lede">An informal series of work-in-progress talks among Penn labs applying X-ray crystallography, cryo-EM, NMR, and related techniques to questions of biological interest. Sign up below to reserve a speaking slot.</p>
+  </header>
+
+  <!-- ============ FORM ============ -->
+  <form id="signup" novalidate>
+    <!-- Formspree helpers -->
+    <input type="hidden" name="_subject" value="Structure Talks — new speaker sign-up" />
+    <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+    <!-- 1. Details -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-num">01</span>
+        <h3 class="section-title">Your details</h3>
+      </div>
+
+      <div class="grid2">
+        <div class="field">
+          <label class="lbl" for="first">First name <span class="req">*</span></label>
+          <input type="text" id="first" name="First name" autocomplete="given-name" required />
+        </div>
+        <div class="field">
+          <label class="lbl" for="last">Last name <span class="req">*</span></label>
+          <input type="text" id="last" name="Last name" autocomplete="family-name" required />
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="lbl" for="email">Email <span class="req">*</span></label>
+        <input type="email" id="email" name="email" autocomplete="email" required />
+      </div>
+
+      <div class="field">
+        <label class="lbl" for="lab">PI / Lab <span class="req">*</span></label>
+        <input type="text" id="lab" name="PI / Lab" placeholder="e.g. Marmorstein Lab" required />
+      </div>
+    </section>
+
+    <!-- 2. Duration -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-num">02</span>
+        <h3 class="section-title">Talk length</h3>
+      </div>
+      <div class="choices" role="radiogroup" aria-label="Talk length">
+        <label class="choice">
+          <input type="radio" name="Duration" value="30 minutes" required />
+          <span class="box"><span class="big">30 minutes</span><span class="sub">Standard slot</span></span>
+        </label>
+        <label class="choice">
+          <input type="radio" name="Duration" value="1 hour" />
+          <span class="box"><span class="big">1 hour</span><span class="sub">By request, when needed</span></span>
+        </label>
+      </div>
+    </section>
+
+    <!-- 3. Availability -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-num">03</span>
+        <div>
+          <h3 class="section-title">Availability</h3>
+          <p class="section-note">Select up to 3 dates you can present. Please make sure you are genuinely free on any date you choose.</p>
+        </div>
+      </div>
+      <div class="avail-top">
+        <span></span>
+        <span class="counter" id="counter" aria-live="polite">0 of 3 selected</span>
+      </div>
+      <div id="dateGrid"><!-- built by JS --></div>
+    </section>
+
+    <!-- 4. Guidelines + initials -->
+    <section class="section">
+      <div class="section-head">
+        <span class="section-num">04</span>
+        <div>
+          <h3 class="section-title">Guidelines</h3>
+          <p class="section-note">Please read, then initial to acknowledge.</p>
+        </div>
+      </div>
+
+      <div class="guidelines" tabindex="0" aria-label="Structure Talks guidelines">
+        <div class="guidelines-inner">
+          <p>This is an informal series of talks given by students, postdocs, and research specialists working in a number of labs on Penn campus who share an interest in the application of X-ray crystallography, electron microscopy, NMR, and other structural techniques to address questions of biological interest. As is to be expected given the science- rather than technique-focus of these labs, talks are not all focused on structure, but cover a wide range of issues in structure, function, and folding of macromolecules.</p>
+
+          <p>Membership of this group is open to all permanent members of a participating lab. Rotation students and other short-term lab members are welcome but will not be added to the email list. All dissertation-level graduate students and postdocs must be active speaking participants. Other members of the groups, such as senior undergraduates and research specialists, may give presentations or be non-speaking participants.</p>
+
+          <span class="tag">A word to speakers new to these talks</span>
+          <p>Do not be concerned if your project is still at an early stage. We like to hear work in progress and we will try to provide useful feedback. Feel free to discuss your problems and frustrations, as well as your preliminary results. While some may find speaking intimidating, starting early gives useful practice in developing the good presentation skills that are essential for any successful career.</p>
+
+          <span class="tag">Confidentiality</span>
+          <p>This is not a public forum. It is a forum for free discussion among colleagues. Information obtained from these talks should be considered a private and privileged communication and should not be shared with anyone outside the group without consent from the speaker and the speaker's PI.</p>
+
+          <span class="tag">Some simple rules to keep things running smoothly</span>
+          <ul>
+            <li>To encourage regular attendance and broad focus, talks do not have formal titles.</li>
+            <li>Talks should be no more than 20 minutes to leave adequate time for questions and discussion.</li>
+            <li>Talks are most often "research in progress," but could also be: a discussion topic (e.g. crystallization methods, refinement programs, etc.); a journal club presentation (reference to be provided to the organizer by the Monday of the week you present, so it can be circulated to members); or a complete story (published or in preparation).</li>
+            <li>Under certain circumstances a 60-minute slot can be requested if needed.</li>
+            <li>If you cannot talk on your appointed day you must switch with someone from the list, and then inform the organizer of the change.</li>
+            <li>A reminder of Structure Talks will be sent out with the names of the scheduled speakers, and of the speakers for the following week.</li>
+            <li>Speakers should arrive early to check that the audiovisual equipment is functioning properly.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="initials-row">
+        <div class="field">
+          <label class="lbl" for="initials">Initials <span class="req">*</span></label>
+          <input type="text" id="initials" name="Initials (acknowledgment)" maxlength="6" autocomplete="off" placeholder="e.g. CS" required />
+        </div>
+        <p class="initials-hint">By entering your initials, you acknowledge that you have read and agree to the guidelines above, including the confidentiality expectation.</p>
+      </div>
+    </section>
+
+    <div class="banner err" id="errBanner" role="alert"></div>
+
+    <div class="submit-bar">
+      <button type="submit" id="submitBtn">Submit sign-up</button>
+      <p class="privacy">Your response goes only to the series organizer. Please don't include confidential or unpublished data in the fields above.</p>
+    </div>
+  </form>
+
+  <!-- ============ SUCCESS ============ -->
+  <div class="success" id="successPanel" role="status">
+    <div class="mark" aria-hidden="true">✓</div>
+    <h2>You're signed up</h2>
+    <p>Thanks for volunteering to speak. The organizer will confirm your date and follow up with any scheduling details. If you need to change your availability, just submit the form again.</p>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  var ENDPOINT = "https://formspree.io/f/mlgqdbdk";
+  var MAX = 3;
+
+  // ---- Date data (all Fridays). Spring block is 2027. ----
+  var months = [
+    { label:"September 2026", days:[["Sep 11, 2026","Fri"],["Sep 18, 2026","Fri"],["Sep 25, 2026","Fri"]] },
+    { label:"October 2026",   days:[["Oct 2, 2026","Fri"],["Oct 9, 2026","Fri"],["Oct 16, 2026","Fri"],["Oct 23, 2026","Fri"],["Oct 30, 2026","Fri"]] },
+    { label:"November 2026",  days:[["Nov 6, 2026","Fri"],["Nov 13, 2026","Fri"],["Nov 20, 2026","Fri"]] },
+    { label:"December 2026",  days:[["Dec 11, 2026","Fri"],["Dec 18, 2026","Fri"]] },
+    { label:"January 2027",   days:[["Jan 8, 2027","Fri"],["Jan 15, 2027","Fri"],["Jan 22, 2027","Fri"],["Jan 29, 2027","Fri"]] },
+    { label:"February 2027",  days:[["Feb 5, 2027","Fri"],["Feb 12, 2027","Fri"],["Feb 19, 2027","Fri"],["Feb 26, 2027","Fri"]] },
+    { label:"March 2027",     days:[["Mar 5, 2027","Fri"],["Mar 12, 2027","Fri"]] },
+    { label:"April 2027",     days:[["Apr 2, 2027","Fri"],["Apr 9, 2027","Fri"],["Apr 16, 2027","Fri"],["Apr 23, 2027","Fri"],["Apr 30, 2027","Fri"]] },
+    { label:"May 2027",       days:[["May 7, 2027","Fri"]] }
+  ];
+
+  var grid = document.getElementById("dateGrid");
+  months.forEach(function(m){
+    var wrap = document.createElement("div");
+    wrap.className = "month";
+    var h = document.createElement("h4");
+    h.textContent = m.label;
+    wrap.appendChild(h);
+    var row = document.createElement("div");
+    row.className = "dates";
+    m.days.forEach(function(d){
+      var full = d[0], wd = d[1];
+      var lbl = document.createElement("label");
+      lbl.className = "date";
+      lbl.innerHTML =
+        '<input type="checkbox" name="Available dates" value="'+full+'">' +
+        '<span class="chip"><span class="d">'+full.replace(", 20","\u2019")+'</span><span class="wd">'+wd+'</span></span>';
+      row.appendChild(lbl);
+    });
+    wrap.appendChild(row);
+    grid.appendChild(wrap);
+  });
+
+  // ---- Max-3 enforcement + counter ----
+  var boxes = Array.prototype.slice.call(grid.querySelectorAll('input[type=checkbox]'));
+  var counter = document.getElementById("counter");
+
+  function checkedCount(){ return boxes.filter(function(b){return b.checked;}).length; }
+  function refresh(){
+    var n = checkedCount();
+    counter.textContent = n + " of " + MAX + " selected";
+    counter.classList.toggle("full", n >= MAX);
+    boxes.forEach(function(b){ b.disabled = (!b.checked && n >= MAX); });
+  }
+  boxes.forEach(function(b){ b.addEventListener("change", refresh); });
+  refresh();
+
+  // ---- Submit ----
+  var form = document.getElementById("signup");
+  var btn = document.getElementById("submitBtn");
+  var errBanner = document.getElementById("errBanner");
+  var successPanel = document.getElementById("successPanel");
+
+  function showError(msg){
+    errBanner.textContent = msg;
+    errBanner.classList.add("show");
+    errBanner.scrollIntoView({behavior:"smooth", block:"center"});
+  }
+  function clearError(){ errBanner.classList.remove("show"); }
+  function clearInvalid(){
+    Array.prototype.forEach.call(form.querySelectorAll(".invalid"), function(el){ el.classList.remove("invalid"); });
+  }
+
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    clearError();
+    clearInvalid();
+
+    // Native required-field check (first/last/email/lab/initials)
+    var firstInvalid = null;
+    ["first","last","email","lab","initials"].forEach(function(id){
+      var el = document.getElementById(id);
+      if(!el.value.trim() || (el.type==="email" && !el.checkValidity())){
+        el.classList.add("invalid");
+        if(!firstInvalid) firstInvalid = el;
+      }
+    });
+    // Duration
+    var duration = form.querySelector('input[name="Duration"]:checked');
+    // Dates
+    var n = checkedCount();
+
+    if(firstInvalid){
+      showError("Please complete the highlighted fields with a valid entry.");
+      firstInvalid.focus();
+      return;
+    }
+    if(!duration){
+      showError("Please choose a talk length (30 minutes or 1 hour).");
+      return;
+    }
+    if(n < 1){
+      showError("Please select at least one date you're available to present.");
+      return;
+    }
+
+    // Send to Formspree via AJAX
+    btn.disabled = true;
+    btn.textContent = "Submitting…";
+    var data = new FormData(form);
+
+    fetch(ENDPOINT, {
+      method: "POST",
+      body: data,
+      headers: { "Accept": "application/json" }
+    }).then(function(res){
+      if(res.ok){
+        form.style.display = "none";
+        successPanel.classList.add("show");
+        successPanel.scrollIntoView({behavior:"smooth", block:"center"});
+      } else {
+        return res.json().then(function(body){
+          var msg = "Something went wrong submitting the form. Please try again.";
+          if(body && body.errors && body.errors.length){
+            msg = body.errors.map(function(er){ return er.message; }).join(" ");
+          }
+          throw new Error(msg);
+        });
+      }
+    }).catch(function(err){
+      showError(err.message || "Network error — please check your connection and try again.");
+      btn.disabled = false;
+      btn.textContent = "Submit sign-up";
+    });
+  });
+})();
+</script>
+</body>
+</html>
